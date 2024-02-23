@@ -1,7 +1,6 @@
 from torch.utils.data import Dataset
 from PIL import Image
 import os
-from matplotlib import pyplot as plt
 
 class Dataset(Dataset):
 
