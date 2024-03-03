@@ -24,7 +24,7 @@ if __name__ == '__main__':
                           [1, -2, 3, 4, -5],
                           [1, 2, -3, -4, 5],
                           [-1, 2, 3, 4, -5]], dtype=torch.float32)
-    input = torch.reshape(input, [1, 1, 5, 5])
+    input = torch.reshape(input, [1, 1, 5, 5]) # for second parameter, both [] and () are fine
 
     model = Model()
     output = model(input)
