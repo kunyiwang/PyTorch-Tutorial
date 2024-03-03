@@ -10,7 +10,6 @@ if __name__ == '__main__':
     # img, label_idx = test_set[0]
     # print(label_idx)
     # print(test_set.classes[label_idx])
-    # img.show()
 
     writer = SummaryWriter('logs')
     for i in range(10):
