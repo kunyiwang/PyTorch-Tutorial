@@ -6,7 +6,7 @@ if __name__ == '__main__':
                           [-1, 2, 3, -4, 5],
                           [1, -2, 3, 4, -5],
                           [1, 2, -3, -4, 5],
-                          [-1, 2, 3, 4, -5],])
+                          [-1, 2, 3, 4, -5]], dtype=torch.float32)
     
     kernal = torch.tensor([[[1, 2, 1],
                            [0, 1, 0],
@@ -16,7 +16,7 @@ if __name__ == '__main__':
                            [2, 1, 0]],
                            [[1, 2, 1],
                            [0, 1, 0],
-                           [2, 1, 0]]])
+                           [2, 1, 0]]], dtype=torch.float32)
     
     # Reshaping because of the parameter reuqirement:
     #   input - (minibatch, in_channels, input_H, input_W)
