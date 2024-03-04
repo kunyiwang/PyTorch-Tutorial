@@ -16,3 +16,11 @@ if __name__ == '__main__':
 
     print(result_L1)
     print(result_MSE)
+
+    # CrossEntropy Loss
+    loss_cross = nn.CrossEntropyLoss()
+    x = torch.tensor([0.1, 0.2, 0.3])
+    x = torch.reshape(x, [1, 3])
+    y = torch.tensor([1])
+    result_cross = loss_cross(x, y)
+    print(result_cross)
