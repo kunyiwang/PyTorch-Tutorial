@@ -15,7 +15,7 @@ class Model(nn.Module):
             nn.Flatten(), # 1024
             nn.Linear(in_features=1024, out_features=64), # 1024 -> 64
             nn.ReLU(), # 64 -> 64
-            nn.Linear(in_features=64, out_features=10) # # 64 -> 10
+            nn.Linear(in_features=64, out_features=10) # 64 -> 10
         )
 
     def forward(self, x):

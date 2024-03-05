@@ -2,7 +2,7 @@ from torch.utils.data import Dataset
 from PIL import Image
 import os
 
-class Dataset(Dataset):
+class MyDataset(Dataset):
 
     def __init__(self, root_dir, label):
         self.root_dir = root_dir
@@ -15,19 +15,23 @@ class Dataset(Dataset):
         img_path = os.path.join(self.path, img_name)
         img = Image.open(img_path)
 
-        return img
+        return img, self.label
     
     def __len__(self):
         return len(self.img_name_list)
     
 if __name__ == '__main__':
     root_dir = 'data/train'
-    label = 'ants'
-    dataset = Dataset(root_dir, label)
+    ants_label = 'ants'
+    bees_label = 'bees'
+    ants_dataset = MyDataset(root_dir, ants_label)
+    bees_dataset = MyDataset(root_dir, bees_label)
+    train_dataset = ants_dataset + bees_dataset
 
     # __len__
-    print(f"Total images in the dataset: {len(dataset)}")
+    print(f"Total images in the dataset: {len(train_dataset)}")
 
     # __getitem__
-    img = dataset[1]
+    img, label = train_dataset[1]
+    print(label)
     img.show()
