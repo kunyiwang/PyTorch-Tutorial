@@ -1,4 +1,5 @@
 import torch
+from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
 from torchvision import transforms
@@ -94,7 +95,11 @@ if __name__ == '__main__':
     total_test_steps = 0
     epoch = 10
 
+    # Set Tensorboard
+    writer = SummaryWriter('./logs')
+
     # Set Training Loop
+    model.train()
     for i in range(epoch):
         print('-----Epoch {} Starts:-----'.format(i+1))
         for batch in train_dataLoader:
@@ -107,4 +112,28 @@ if __name__ == '__main__':
             optimizer.step() # Gradient descent
 
             total_train_steps = total_train_steps + 1
-            print('Training batch counts:{}, Loss:{}'.format(total_train_steps, loss.item()))
+            if total_train_steps % 1 == 0:
+                print('Training batch counts:{}, Loss:{}'.format(total_train_steps, loss.item()))
+                writer.add_scalar('Training Loss', loss.item(), total_train_steps)
+
+        # Set test for each epoch
+        model.eval()
+        total_test_loss = 0
+        with torch.no_grad():
+            for batch in test_dataLoader:
+                imgs, targets = batch
+                outputs = model(imgs)
+                loss = loss_fn(outputs, targets)
+                total_test_loss = total_test_loss + loss.item() # loss' type is tensor, loss.item() is float
+        print('Test Set Loss:{}'.format(total_test_loss))
+        total_test_steps = total_test_steps + 1
+        writer.add_scalar('Test Loss:', total_test_loss, total_test_steps)
+
+        # Save Model
+        torch.save(model.state_dict(),'./models/kunyi_{}'.format(i))
+        print('Model Saved!')
+    
+    writer.close()
+
+    
+
