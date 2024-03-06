@@ -86,6 +86,12 @@ if __name__ == '__main__':
     # Set Loss Function
     loss_fn = nn.CrossEntropyLoss()
 
+    # Set CUDA
+    if torch.cuda.is_available():
+        print('CUDA Verified!')
+        model = model.cuda()
+        loss_fn = loss_fn.cuda()
+
     # Set Optimizer
     learning_rate = 1e-2
     optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
@@ -104,6 +110,9 @@ if __name__ == '__main__':
         print('-----Epoch {} Starts:-----'.format(i+1))
         for batch in train_dataLoader:
             imgs, targets = batch
+            if torch.cuda.is_available():
+                imgs = imgs.cuda()
+                targets = targets.cuda()
             outputs = model(imgs)
             loss = loss_fn(outputs, targets)
 
@@ -122,6 +131,9 @@ if __name__ == '__main__':
         with torch.no_grad():
             for batch in test_dataLoader:
                 imgs, targets = batch
+                if torch.cuda.is_available():
+                    imgs = imgs.cuda()
+                    targets = targets.cuda()
                 outputs = model(imgs)
                 loss = loss_fn(outputs, targets)
                 total_test_loss = total_test_loss + loss.item() # loss' type is tensor, loss.item() is float
