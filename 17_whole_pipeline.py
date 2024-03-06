@@ -6,6 +6,7 @@ from torchvision import transforms
 import torch.nn as nn
 from PIL import Image
 import os
+import time
 
 class MyDataset(Dataset):
 
@@ -107,6 +108,7 @@ if __name__ == '__main__':
     # Set Training Loop
     model.train()
     for i in range(epoch):
+        start_time = time.time()
         print('-----Epoch {} Starts:-----'.format(i+1))
         for batch in train_dataLoader:
             imgs, targets = batch
@@ -124,6 +126,7 @@ if __name__ == '__main__':
             if total_train_steps % 1 == 0:
                 print('Training batch counts:{}, Loss:{}'.format(total_train_steps, loss.item()))
                 writer.add_scalar('Training Loss', loss.item(), total_train_steps)
+        print('Epoch Training Cost:{} s'.format(time.time() - start_time))
 
         # Set test for each epoch
         model.eval()
