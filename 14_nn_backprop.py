@@ -1,4 +1,5 @@
 import torch
+import time
 import torchvision
 import torch.nn as nn
 from torchvision import transforms
@@ -25,6 +26,7 @@ class Model(nn.Module):
         return self.model1(x)
     
 if __name__ == '__main__':
+    device = torch.device('cpu')
     dataset_transform = transforms.Compose([transforms.ToTensor()])
     train_set = torchvision.datasets.CIFAR10(root='./data', train=True, transform=dataset_transform, download=False)
     test_set = torchvision.datasets.CIFAR10(root='./data', train=False, transform=dataset_transform, download=False)
@@ -33,18 +35,24 @@ if __name__ == '__main__':
     test_loader = DataLoader(dataset=test_set, batch_size=32, shuffle=True, num_workers=0, drop_last=True)
 
     model = Model()
+    model.to(device)
     loss = nn.CrossEntropyLoss()
+    loss.to(device)
     optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
     
     for epoch in range(10):
         running_loss = 0.0
+        start_time = time.time()
         for batch in train_loader:
             imgs, targets = batch
+            imgs = imgs.to(device)
+            targets = targets.to(device)
             output = model(imgs)
             result_loss = loss(output, targets)
             optimizer.zero_grad() # Initilize the gradient
             result_loss.backward() # Calculate the gradient
             optimizer.step() # Using the gradient in previous step to achieve gradient descent(which is applied to model.parameters())
             running_loss = running_loss + result_loss
+        print('Epoch Training Time:{}'.format(time.time() - start_time))
 
         print(running_loss)
